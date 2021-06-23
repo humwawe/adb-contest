@@ -62,7 +62,7 @@ L_ORDERKEY,L_PARTKEY
 
 # 依赖 & 编译说明
 - 只允许使用标准库，不能引入外部依赖，pom文件测评程序编译时会强制覆盖
-- 不允许使用 JNI
+- 不允许使用 JNI，复赛允许使用 Unsafe
 - 不要修改 maven 的`pom.xml`文件，可能会导致编译失败
 - 不要修改`AnalyticDB`接口文件，可能会导致编译失败  
 - 提交代码前请运行`mvn clean package -DskipTests`，确保能编译通过
