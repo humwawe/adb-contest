@@ -48,7 +48,8 @@ public class SimpleAnalyticDB implements AnalyticDB {
         int rank = (int) Math.round(values.size() * percentile);
         String ans = values.get(rank-1).toString();
 
-        System.out.println("Query:" + table + ", " + column + ", " + percentile + " Answer:" + rank + ", " + ans);
+        System.out.println("[" + Thread.currentThread().getId() + "] " +
+                "Query:" + table + ", " + column + ", " + percentile + " Answer:" + rank + ", " + ans);
 
         return ans;
     }
