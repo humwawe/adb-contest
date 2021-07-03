@@ -1,4 +1,4 @@
-package com.aliyun.adb.contest;
+package com.aliyun.adb.contest.demo;
 
 import com.aliyun.adb.contest.spi.AnalyticDB;
 

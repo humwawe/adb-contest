@@ -1,21 +1,29 @@
-package com.aliyun.adb.contest;
+package com.aliyun.adb.contest.demo;
 
 import com.aliyun.adb.contest.spi.AnalyticDB;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TestSimpleAnalyticDB {
+    String dataDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "test_data";
+    String workspaceDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "workspace";
+    String resultsFile = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "test_result" + File.separator + "results";
 
     @Test
     public void testCorrectness() throws Exception {
-        File testDataDir = new File("./test_data");
-        File testWorkspaceDir = new File("./target");
-        File testResultsFile = new File("./test_result/results");
+        File testDataDir = new File(dataDir);
+        File testWorkspaceDir = new File(workspaceDir);
+        File testResultsFile = new File(resultsFile);
         List<String> ans = new ArrayList<>();
 
         try (BufferedReader resReader = new BufferedReader(new FileReader(testResultsFile))) {
