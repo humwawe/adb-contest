@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,5 +44,16 @@ public class EnvInfo {
                 tableColumn2Index.put(Convert.tableColumnKey(table, column), size++);
             }
         }
+    }
+
+    public static String printString() {
+        return "EnvInfo{" +
+                "size=" + size +
+                ", workspace=" + workspace +
+                ", dataFiles=" + Arrays.toString(dataFiles) +
+                ", tableColumn2Index=" + tableColumn2Index +
+                ", tablecolumns=" + tablecolumns +
+                ", size=" + size +
+                '}';
     }
 }

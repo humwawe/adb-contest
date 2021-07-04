@@ -2,15 +2,11 @@ package com.aliyun.adb.contest;
 
 import com.aliyun.adb.contest.constants.Constants;
 import com.aliyun.adb.contest.constants.EnvInfo;
-import com.aliyun.adb.contest.util.Bucket;
 import com.aliyun.adb.contest.index.IndexAccumulator;
 import com.aliyun.adb.contest.index.IndexBuilder;
 import com.aliyun.adb.contest.query.LongReaderRunner;
 import com.aliyun.adb.contest.spi.AnalyticDB;
-import com.aliyun.adb.contest.util.Convert;
-import com.aliyun.adb.contest.util.Logger;
-import com.aliyun.adb.contest.util.SearchUtil;
-import com.aliyun.adb.contest.util.SortUtil;
+import com.aliyun.adb.contest.util.*;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -33,12 +29,14 @@ public class HumAnalyticDB implements AnalyticDB {
         logger.info("begin to load");
         initEnvInfo(tpchDataFileDir, workspaceDir);
         logger.info("end init inf");
-        buildIndex();
-        sumIndex();
-        logger.info("first stage time %d", System.currentTimeMillis() - start);
-        System.out.println(System.currentTimeMillis() - start);
-        logger.info("params are %s", Constants.printString());
-//        throw new RuntimeException("test");
+        logger.info(EnvInfo.printString());
+        throw new RuntimeException("test");
+//        buildIndex();
+//        sumIndex();
+//        logger.info("first stage time %d", System.currentTimeMillis() - start);
+//        System.out.println(System.currentTimeMillis() - start);
+//        logger.info("params are %s", Constants.printString());
+
     }
 
     private void sumIndex() {
