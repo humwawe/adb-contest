@@ -32,10 +32,12 @@ public class FileGenerate {
         File file = new File(dataFile);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String s = reader.readLine();
-//        String table = file.getName();
+
         String table = "orders";
-//        String[] cols = s.split(",");
         String[] cols = new String[]{"O_ORDERKEY", "O_CUSTKEY"};
+//        String table = file.getName();
+//        String[] cols = s.split(",");
+
         Map<String, List<Long>> map = new HashMap<>();
         map.put(table + "." + cols[0], new ArrayList<>());
         map.put(table + "." + cols[1], new ArrayList<>());

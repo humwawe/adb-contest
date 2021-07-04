@@ -87,9 +87,9 @@ public class IndexBuilderRunner implements Runnable {
         long range = Math.min(segment.getNextOffset() - segment.getOffset() + 1, limit);
         while (pos < range) {
 //            for (int i = 0; i < columnLen - 1; i++) {
-            calColumnBucketCounts(0, ',');
+            calColumnBucketCounts(colId, ',');
 //            }
-            calColumnBucketCounts(1, '\n');
+            calColumnBucketCounts(nextColId, '\n');
         }
 //        id ^= Constants.CHANGE_THREAD_ID;
     }

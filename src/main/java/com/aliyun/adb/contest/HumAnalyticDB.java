@@ -126,19 +126,22 @@ public class HumAnalyticDB implements AnalyticDB {
             len = 18;
         }
         String s = String.valueOf(kth);
+        String res;
         if (len == 19) {
             while (s.length() < len - 2) {
                 s = "0" + s;
             }
-            return "" + bucketKey + s;
+            res = "" + bucketKey + s;
         } else if (len == 18) {
             while (s.length() < len - 1) {
                 s = "0" + s;
             }
-            return "" + bucketKey + s;
+            res = "" + bucketKey + s;
         } else {
-            return s;
+            res = s;
         }
+        logger.info("res: " + res);
+        return res;
     }
 }
 
