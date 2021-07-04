@@ -103,6 +103,7 @@ public class HumAnalyticDB implements AnalyticDB {
             rankInBucket = rank - IndexAccumulator.bucketCounts[columnIndex][bucketKey - 1];
             cnt = IndexAccumulator.bucketCounts[columnIndex][bucketKey] - IndexAccumulator.bucketCounts[columnIndex][bucketKey - 1];
         }
+        logger.info("bucketKey: " + bucketKey);
         if (executorService == null) {
             executorService = Executors.newFixedThreadPool(Constants.WRITE_NUM_CORE);
         }

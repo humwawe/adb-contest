@@ -118,7 +118,7 @@ public class IndexBuilderRunner2 implements Runnable {
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
 //            writeManager.putLong(id, columnId, bucketKey, num);
         } else if (len == 18) {
-            int bucketKey = Bucket.encode(readBuffer[startPosition]);
+            int bucketKey = Bucket.encode(readBuffer[startPosition++]);
 //            int bucketKey = Bucket.getKey(num);
             Bucket.bucketCounts[id][columnId][bucketKey]++;
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);

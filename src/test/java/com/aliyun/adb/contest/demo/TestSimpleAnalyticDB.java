@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TestSimpleAnalyticDB {
     String dataDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "test_data";
     String workspaceDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "workspace";
-    String resultsFile = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "test_result" + File.separator + "results";
+    String resultsFile = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "test_result" + File.separator + "more_results";
 
     @Test
     public void testCorrectness() throws Exception {
