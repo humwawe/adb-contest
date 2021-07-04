@@ -14,21 +14,20 @@ import java.io.RandomAccessFile;
 /**
  * @author hum
  */
-public class IndexBuilderRunner implements Runnable {
+public class IndexBuilderRunner2 implements Runnable {
 
     private static final Logger logger = Logger.GLOBAL_LOGGER;
 
-//    private final ByteBuffer localBuffer = ByteBuffer.allocate(1024);
 
     private final RandomAccessFile raf;
     private static long currentOffset;
     private int id;
-    private final int colId = 0;
-    private final int nextColId = 1;
+    private final int colId = 2;
+    private final int nextColId = 3;
     static long fileSize;
     final private WriteManager writeManager;
 
-    public IndexBuilderRunner(int id, WriteManager writeManager, File currentFile) throws FileNotFoundException {
+    public IndexBuilderRunner2(int id, WriteManager writeManager, File currentFile) throws FileNotFoundException {
         this.id = id;
         this.writeManager = writeManager;
         raf = new RandomAccessFile(currentFile, "r");
@@ -87,9 +86,9 @@ public class IndexBuilderRunner implements Runnable {
         long range = Math.min(segment.getNextOffset() - segment.getOffset() + 1, limit);
         while (pos < range) {
 //            for (int i = 0; i < columnLen - 1; i++) {
-            calColumnBucketCounts(0, ',');
+            calColumnBucketCounts(colId, ',');
 //            }
-            calColumnBucketCounts(1, '\n');
+            calColumnBucketCounts(nextColId, '\n');
         }
 //        id ^= Constants.CHANGE_THREAD_ID;
     }
@@ -132,4 +131,5 @@ public class IndexBuilderRunner implements Runnable {
         pos++;
     }
 }
+
 

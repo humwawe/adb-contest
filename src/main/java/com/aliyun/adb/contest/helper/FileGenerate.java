@@ -14,7 +14,8 @@ public class FileGenerate {
         BufferedReader reader = new BufferedReader(new FileReader(new File(dataFile)));
         String s = reader.readLine();
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(bigDataFile));
-        bufferedWriter.write(s + "\n");
+//        bufferedWriter.write(s + "\n");
+        bufferedWriter.write("O_ORDERKEY,O_CUSTKEY\n");
         String rawRow;
         List<String> list = new ArrayList<>();
         while ((rawRow = reader.readLine()) != null) {

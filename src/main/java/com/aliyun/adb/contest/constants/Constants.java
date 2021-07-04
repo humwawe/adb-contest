@@ -23,7 +23,14 @@ public interface Constants {
 //    int BUCKET_MEMO_SIZE = 3600000 / READ_NUM_CORE + BUCKET_MEMO_MARGE;
 
     int COMPUTE_NUM_CORE = 3;
+    int LOCAL_RECORD_SUM = 50000000;
 
+    int RECORD_SUM = 1000000000;
+
+    int COLUMN_NUM = 2;
+    String INDEX_DATA = "index_data";
+    String BUCKET_DATA = "bucket_data";
+    String ENV_INFO = "env_info";
     //    int CHANGE_THREAD_ID = COMPUTE_NUM_CORE - 1;
 
     static String printString() {

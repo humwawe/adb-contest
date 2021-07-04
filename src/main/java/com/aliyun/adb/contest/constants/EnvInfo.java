@@ -18,7 +18,7 @@ public class EnvInfo {
     public static String workspace;
     public static File[] dataFiles;
     public static Map<String, Integer> tableColumn2Index = new HashMap<>();
-    public static Map<String, Integer> tablecolumns = new HashMap<>();
+    public static Map<String, Integer> tableColumns = new HashMap<>();
     public static int size = 0;
 
     public static void setEnvInfo(String tpchDataFileDir, String workspaceDir) throws IOException {
@@ -39,7 +39,7 @@ public class EnvInfo {
             BufferedReader reader = new BufferedReader(new FileReader(dataFile));
             String table = dataFile.getName();
             String[] columns = reader.readLine().split(",");
-            tablecolumns.put(table, columns.length);
+            tableColumns.put(table, columns.length);
             for (String column : columns) {
                 tableColumn2Index.put(Convert.tableColumnKey(table, column), size++);
             }
@@ -52,7 +52,7 @@ public class EnvInfo {
                 ", workspace=" + workspace +
                 ", dataFiles=" + Arrays.toString(dataFiles) +
                 ", tableColumn2Index=" + tableColumn2Index +
-                ", tablecolumns=" + tablecolumns +
+                ", tablecolumns=" + tableColumns +
                 ", size=" + size +
                 '}';
     }

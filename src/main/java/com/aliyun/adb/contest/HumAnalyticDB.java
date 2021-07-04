@@ -4,10 +4,13 @@ import com.aliyun.adb.contest.constants.Constants;
 import com.aliyun.adb.contest.constants.EnvInfo;
 import com.aliyun.adb.contest.index.IndexAccumulator;
 import com.aliyun.adb.contest.index.IndexBuilder;
+import com.aliyun.adb.contest.index.IndexLoader;
+import com.aliyun.adb.contest.index.IndexSaver;
 import com.aliyun.adb.contest.query.LongReaderRunner;
 import com.aliyun.adb.contest.spi.AnalyticDB;
 import com.aliyun.adb.contest.util.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -26,17 +29,39 @@ public class HumAnalyticDB implements AnalyticDB {
     @Override
     public void load(String tpchDataFileDir, String workspaceDir) throws Exception {
         long start = System.currentTimeMillis();
-        logger.info("begin to load");
-        initEnvInfo(tpchDataFileDir, workspaceDir);
-        logger.info("end init inf");
-        logger.info(EnvInfo.printString());
-        throw new RuntimeException("test");
-//        buildIndex();
-//        sumIndex();
-//        logger.info("first stage time %d", System.currentTimeMillis() - start);
-//        System.out.println(System.currentTimeMillis() - start);
-//        logger.info("params are %s", Constants.printString());
+        if (firstStage(workspaceDir)) {
+            logger.info("first stage");
+            logger.info("begin to load");
 
+            initEnvInfo(tpchDataFileDir, workspaceDir);
+            logger.info("end init inf");
+//            logger.info(EnvInfo.printString());
+
+            buildIndex();
+
+            sumIndex();
+
+            logger.info("begin to write index data");
+            IndexSaver.saveIndex();
+            logger.info("end write index data");
+
+            logger.info("load stage time %d", System.currentTimeMillis() - start);
+
+            logger.info("params are %s", Constants.printString());
+        } else {
+            logger.info("second stage");
+            logger.info("begin to load index");
+            IndexLoader.loadIndexData(workspaceDir);
+        }
+
+//        throw new RuntimeException("test");
+    }
+
+
+    private boolean firstStage(String workspaceDir) {
+        File dir = new File(workspaceDir);
+        File[] files = dir.listFiles();
+        return files == null || files.length == 0;
     }
 
     private void sumIndex() {
@@ -64,9 +89,9 @@ public class HumAnalyticDB implements AnalyticDB {
 
     @Override
     public String quantile(String table, String column, double percentile) throws Exception {
-        logger.info("Start quantile");
+        logger.info("Start quantile table: %s, column: %s, percentile %f ", table, column, percentile);
         long rank = Math.round(IndexAccumulator.sum * percentile);
-        System.out.println("rank: " + rank);
+        logger.info("rank: " + rank);
         int columnIndex = EnvInfo.tableColumn2Index.get(Convert.tableColumnKey(table, column));
         int bucketKey = SearchUtil.lowerBound(IndexAccumulator.bucketCounts[columnIndex], rank);
         logger.info("bucketKey: " + bucketKey);
@@ -95,7 +120,7 @@ public class HumAnalyticDB implements AnalyticDB {
         }
         latch.await();
         long kth = SortUtil.findKthLargest(list, (int) (rankInBucket - 1));
-        logger.info("end quantile table: ");
+        logger.info("end quantile ");
         int len = 0;
         if (bucketKey > 9) {
             len = 19;

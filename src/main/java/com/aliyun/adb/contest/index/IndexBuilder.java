@@ -22,10 +22,13 @@ public class IndexBuilder {
 
     public void buildIndex() throws InterruptedException, IOException {
         logger.info("begin to build index");
-        ExecutorService executorService = Executors.newFixedThreadPool(Constants.READ_NUM_CORE);
+        ExecutorService executorService = Executors.newFixedThreadPool(Constants.READ_NUM_CORE * 2);
 
         for (int i = 0; i < Constants.READ_NUM_CORE; i++) {
             executorService.submit(new IndexBuilderRunner(i, WriteManager.getInstance(), EnvInfo.dataFiles[0]));
+        }
+        for (int i = 0; i < Constants.READ_NUM_CORE; i++) {
+            executorService.submit(new IndexBuilderRunner2(i, WriteManager.getInstance(), EnvInfo.dataFiles[1]));
         }
 //        for (int i = 0; i < Constants.READ_NUM_CORE; i++) {
 //            executorService.submit(new ReadRunner(i, ComputeManager.getInstance(), EnvInfo.dataFiles[0]));

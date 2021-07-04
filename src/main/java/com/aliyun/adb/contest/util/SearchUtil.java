@@ -4,7 +4,7 @@ package com.aliyun.adb.contest.util;
  * @author hum
  */
 public class SearchUtil {
-    public static int lowerBound(long[] bucketCount, long rank) {
+    public static int lowerBound(int[] bucketCount, long rank) {
         int l = 0;
         int r = bucketCount.length - 1;
         while (l < r) {

@@ -10,15 +10,17 @@ import com.aliyun.adb.contest.util.Logger;
  */
 public class IndexAccumulator {
     private static final Logger logger = Logger.GLOBAL_LOGGER;
-    public static long[][] bucketCounts;
-    public static long sum;
+    public static int[][] bucketCounts;
+    public static int sum = Constants.RECORD_SUM;
+    public static int sum1;
+    public static int sum2;
 
     public static void sumIndex() {
         logger.info("begin to accumulate index");
-        bucketCounts = new long[EnvInfo.size][Constants.BUCKET_SIZE];
+        bucketCounts = new int[EnvInfo.size][Constants.BUCKET_SIZE];
         for (int columnId = 0; columnId < Bucket.bucketCounts[0].length; columnId++) {
             for (int bucketKey = 0; bucketKey < Bucket.bucketCounts[0][0].length; bucketKey++) {
-                long tmp = 0;
+                int tmp = 0;
                 for (int threadId = 0; threadId < Bucket.bucketCounts.length; threadId++) {
                     tmp += Bucket.bucketCounts[threadId][columnId][bucketKey];
                 }
@@ -30,8 +32,10 @@ public class IndexAccumulator {
 
             }
         }
-        sum = bucketCounts[0][Constants.BUCKET_SIZE - 1];
-        logger.info("record sum %d", sum);
+        sum1 = bucketCounts[0][Constants.BUCKET_SIZE - 1];
+        sum2 = bucketCounts[2][Constants.BUCKET_SIZE - 1];
+        logger.info("record sum1 %d", sum1);
+        logger.info("record sum2 %d", sum2);
         logger.info("Index data accumulated");
     }
 }
