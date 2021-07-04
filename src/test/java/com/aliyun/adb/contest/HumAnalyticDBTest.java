@@ -1,6 +1,5 @@
 package com.aliyun.adb.contest;
 
-import com.aliyun.adb.contest.write.WriteManager;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,6 +19,7 @@ public class HumAnalyticDBTest extends TestCase {
 
     @Test
     public void testdb() throws Exception {
+        clean(workspaceDir);
         try {
             HumAnalyticDB demoAnalyticDB = new HumAnalyticDB();
             demoAnalyticDB.load(bigDataFileDir, workspaceDir);
@@ -35,8 +35,14 @@ public class HumAnalyticDBTest extends TestCase {
             e.printStackTrace();
         } finally {
             System.out.println("clean files");
-            WriteManager.getInstance().deleteFile();
         }
 
+    }
+
+    private void clean(String workspaceDir) {
+        File[] files = new File(workspaceDir).listFiles();
+        for (File file : files) {
+            file.delete();
+        }
     }
 }

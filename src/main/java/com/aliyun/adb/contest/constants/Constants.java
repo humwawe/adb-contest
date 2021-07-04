@@ -8,9 +8,9 @@ public interface Constants {
     int BUCKET_SIZE = 93;
 
     int SEGMENT_MARGE = 50;
-    int SEGMENT_SIZE = 128 * 1024 - SEGMENT_MARGE;
+    int SEGMENT_SIZE = 512 * 1024 - SEGMENT_MARGE;
 
-    int READ_NUM_CORE = 3;
+    int READ_NUM_CORE = 6;
 //    int READ_BUFFER_NUM = 1 << 6;
 
     int WRITE_BUFFER_SIZE = 64 * 1024;
@@ -22,7 +22,7 @@ public interface Constants {
 //    int BUCKET_MEMO_MARGE = 50000;
 //    int BUCKET_MEMO_SIZE = 3600000 / READ_NUM_CORE + BUCKET_MEMO_MARGE;
 
-    int COMPUTE_NUM_CORE = 3;
+    int COMPUTE_NUM_CORE = 6;
     int LOCAL_RECORD_SUM = 50000000;
 
     int RECORD_SUM = 1000000000;

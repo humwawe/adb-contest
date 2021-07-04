@@ -19,6 +19,7 @@ public class IndexLoader {
         int[][] bucketCountsSum = loadIndexAccumulator(workspaceDir);
         int[][][] bucketCounts = loadBucket(workspaceDir);
         EnvInfo.tableColumn2Index = tableColumn2Index;
+        EnvInfo.workspace = workspaceDir;
         IndexAccumulator.bucketCounts = bucketCountsSum;
         Bucket.bucketCounts = bucketCounts;
     }

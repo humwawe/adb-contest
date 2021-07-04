@@ -94,7 +94,6 @@ public class HumAnalyticDB implements AnalyticDB {
         logger.info("rank: " + rank);
         int columnIndex = EnvInfo.tableColumn2Index.get(Convert.tableColumnKey(table, column));
         int bucketKey = SearchUtil.lowerBound(IndexAccumulator.bucketCounts[columnIndex], rank);
-        logger.info("bucketKey: " + bucketKey);
         long rankInBucket;
         long cnt;
         if (bucketKey == 0) {
@@ -104,7 +103,6 @@ public class HumAnalyticDB implements AnalyticDB {
             rankInBucket = rank - IndexAccumulator.bucketCounts[columnIndex][bucketKey - 1];
             cnt = IndexAccumulator.bucketCounts[columnIndex][bucketKey] - IndexAccumulator.bucketCounts[columnIndex][bucketKey - 1];
         }
-        logger.info("cnt: " + cnt);
         if (executorService == null) {
             executorService = Executors.newFixedThreadPool(Constants.WRITE_NUM_CORE);
         }
@@ -120,7 +118,6 @@ public class HumAnalyticDB implements AnalyticDB {
         }
         latch.await();
         long kth = SortUtil.findKthLargest(list, (int) (rankInBucket - 1));
-        logger.info("end quantile ");
         int len = 0;
         if (bucketKey > 9) {
             len = 19;

@@ -105,20 +105,6 @@ public class WriteManager {
         }
     }
 
-    public void deleteFile() throws IOException {
-        for (int i = 0; i < fileChannels.length; i++) {
-            for (int j = 0; j < EnvInfo.size; j++) {
-                for (int k = 0; k < Constants.BUCKET_SIZE; k++) {
-                    File file = new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k));
-                    if (file.exists()) {
-                        fileChannels[i][j][k].close();
-                        file.delete();
-                    }
-                }
-            }
-        }
-    }
-
 //    public void close() throws IOException {
 //        for (WriteByteBucket[][] writerBucket : writerBuckets) {
 //            for (int j = 0; j < writerBuckets[0].length; j++) {
@@ -129,18 +115,7 @@ public class WriteManager {
 //        }
 //    }
 //
-//    public void deleteFile() throws IOException {
-//        for (int i = 0; i < randomAccessFiles.length; i++) {
-//            for (int j = 0; j < EnvInfo.size; j++) {
-//                for (int k = 0; k < Constants.BUCKET_SIZE; k++) {
-//                    File file = new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k));
-//                    if (file.exists()) {
-//                        file.delete();
-//                    }
-//                }
-//            }
-//        }
-//    }
+
 
 
 }
