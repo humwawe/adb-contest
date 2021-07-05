@@ -2,19 +2,15 @@ package com.aliyun.adb.contest;
 
 import com.aliyun.adb.contest.constants.Constants;
 import com.aliyun.adb.contest.constants.EnvInfo;
-import com.aliyun.adb.contest.index.IndexAccumulator;
-import com.aliyun.adb.contest.index.IndexBuilder;
-import com.aliyun.adb.contest.index.IndexLoader;
-import com.aliyun.adb.contest.index.IndexSaver;
-import com.aliyun.adb.contest.query.LongReaderRunner;
+import com.aliyun.adb.contest.index.*;
 import com.aliyun.adb.contest.spi.AnalyticDB;
 import com.aliyun.adb.contest.util.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author hum
@@ -35,11 +31,18 @@ public class HumAnalyticDB implements AnalyticDB {
 
             initEnvInfo(tpchDataFileDir, workspaceDir);
             logger.info("end init inf");
-//            logger.info(EnvInfo.printString());
 
+            logger.info("begin to build index");
             buildIndex();
+            logger.info("Index built");
 
+            logger.info("begin to accumulate index");
             sumIndex();
+            logger.info("Index data accumulated");
+
+            logger.info("begin to accumulate hot point");
+            getHotPoint();
+            logger.info("hot point accumulated");
 
             logger.info("begin to write index data");
             IndexSaver.saveIndex();
@@ -55,6 +58,16 @@ public class HumAnalyticDB implements AnalyticDB {
         }
 
 //        throw new RuntimeException("test");
+    }
+
+    private void getHotPoint() throws InterruptedException {
+        ExecutorService service = Executors.newFixedThreadPool(EnvInfo.size);
+        for (int colmunId = 0; colmunId < EnvInfo.size; colmunId++) {
+            service.submit(new IndexPointRunner(colmunId));
+        }
+        service.shutdown();
+        service.awaitTermination(100000, TimeUnit.MINUTES);
+
     }
 
 
@@ -85,7 +98,7 @@ public class HumAnalyticDB implements AnalyticDB {
 //        queryExecutor.queryFile();
 //        return queryExecutor.getResult();
 //    }
-    ExecutorService executorService;
+    ExecutorService executorService = Executors.newFixedThreadPool(12);
 
     @Override
     public String quantile(String table, String column, double percentile) throws Exception {
@@ -93,9 +106,10 @@ public class HumAnalyticDB implements AnalyticDB {
         logger.info("Thread %d Start quantile table: %s, column: %s, percentile %f ", Thread.currentThread().getId(), table, column, percentile);
         long rank = Math.round(IndexAccumulator.sum * percentile);
         int columnIndex = EnvInfo.tableColumn2Index.get(Convert.tableColumnKey(table, column));
+
         int bucketKey = SearchUtil.lowerBound(IndexAccumulator.bucketCounts[columnIndex], rank);
         long rankInBucket;
-        long cnt;
+        int cnt;
         if (bucketKey == 0) {
             rankInBucket = rank;
             cnt = IndexAccumulator.bucketCounts[columnIndex][0];
@@ -103,43 +117,11 @@ public class HumAnalyticDB implements AnalyticDB {
             rankInBucket = rank - IndexAccumulator.bucketCounts[columnIndex][bucketKey - 1];
             cnt = IndexAccumulator.bucketCounts[columnIndex][bucketKey] - IndexAccumulator.bucketCounts[columnIndex][bucketKey - 1];
         }
+        long[] list = new long[cnt];
+        Bucket.getResList(columnIndex, bucketKey, executorService, list);
 
-        if (executorService == null) {
-            executorService = Executors.newFixedThreadPool(Constants.WRITE_NUM_CORE);
-        }
-        CountDownLatch latch = new CountDownLatch(Constants.WRITE_NUM_CORE);
-        long[] list = new long[(int) cnt];
-        int sum = 0;
-        for (int threadId = 0; threadId < Constants.WRITE_NUM_CORE; threadId++) {
-            LongReaderRunner longReaderRunner = new LongReaderRunner(threadId, columnIndex, bucketKey, list, sum, latch);
-            executorService.submit(longReaderRunner);
-            for (int i = 0; i < Constants.READ_NUM_CORE / Constants.WRITE_NUM_CORE; i++) {
-                sum += Bucket.bucketCounts[threadId + i * Constants.WRITE_NUM_CORE][columnIndex][bucketKey];
-            }
-        }
-        latch.await();
         long kth = SortUtil.findKthLargest(list, (int) (rankInBucket - 1));
-        int len = 0;
-        if (bucketKey > 9) {
-            len = 19;
-        } else if (bucketKey > 0) {
-            len = 18;
-        }
-        String s = String.valueOf(kth);
-        String res;
-        if (len == 19) {
-            while (s.length() < len - 2) {
-                s = "0" + s;
-            }
-            res = "" + bucketKey + s;
-        } else if (len == 18) {
-            while (s.length() < len - 1) {
-                s = "0" + s;
-            }
-            res = "" + bucketKey + s;
-        } else {
-            res = s;
-        }
+        String res = Convert.kth2FinalKthString(kth, bucketKey);
         logger.info("rank: %d, bucketKey: %d, res: %s", rank, bucketKey, res);
         logger.info("end query  time: %d", System.currentTimeMillis() - start);
         return res;

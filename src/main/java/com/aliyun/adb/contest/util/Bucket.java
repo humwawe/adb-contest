@@ -1,5 +1,11 @@
 package com.aliyun.adb.contest.util;
 
+import com.aliyun.adb.contest.constants.Constants;
+import com.aliyun.adb.contest.query.LongReaderRunner;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+
 /**
  * @author hum
  */
@@ -14,4 +20,16 @@ public class Bucket {
         return byte1 - '0';
     }
 
+    public static void getResList(int columnIndex, int bucketKey, ExecutorService executorService, long[] list) throws Exception {
+        CountDownLatch latch = new CountDownLatch(Constants.WRITE_NUM_CORE);
+        int sum = 0;
+        for (int threadId = 0; threadId < Constants.WRITE_NUM_CORE; threadId++) {
+            LongReaderRunner longReaderRunner = new LongReaderRunner(threadId, columnIndex, bucketKey, list, sum, latch);
+            executorService.submit(longReaderRunner);
+            for (int i = 0; i < Constants.READ_NUM_CORE / Constants.WRITE_NUM_CORE; i++) {
+                sum += Bucket.bucketCounts[threadId + i * Constants.WRITE_NUM_CORE][columnIndex][bucketKey];
+            }
+        }
+        latch.await();
+    }
 }

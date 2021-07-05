@@ -16,7 +16,6 @@ public class IndexAccumulator {
     public static int sum2;
 
     public static void sumIndex() {
-        logger.info("begin to accumulate index");
         bucketCounts = new int[EnvInfo.size][Constants.BUCKET_SIZE];
         for (int columnId = 0; columnId < Bucket.bucketCounts[0].length; columnId++) {
             for (int bucketKey = 0; bucketKey < Bucket.bucketCounts[0][0].length; bucketKey++) {
@@ -36,6 +35,5 @@ public class IndexAccumulator {
         sum2 = bucketCounts[2][Constants.BUCKET_SIZE - 1];
         logger.info("record sum1 %d", sum1);
         logger.info("record sum2 %d", sum2);
-        logger.info("Index data accumulated");
     }
 }

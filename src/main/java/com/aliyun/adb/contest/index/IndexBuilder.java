@@ -21,7 +21,7 @@ public class IndexBuilder {
     }
 
     public void buildIndex() throws InterruptedException, IOException {
-        logger.info("begin to build index");
+
         ExecutorService executorService = Executors.newFixedThreadPool(Constants.READ_NUM_CORE * 2);
 
         for (int i = 0; i < Constants.READ_NUM_CORE; i++) {
@@ -82,7 +82,6 @@ public class IndexBuilder {
 
         logger.info("writeExecutor closed  ...");
 
-        logger.info("Index built");
     }
 
 

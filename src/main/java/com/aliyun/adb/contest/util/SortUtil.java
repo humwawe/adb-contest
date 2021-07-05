@@ -4,12 +4,11 @@ package com.aliyun.adb.contest.util;
  * @author hum
  */
 public class SortUtil {
-    public static long findKthLargest(long[] nums, int k) {
-        int len = nums.length;
-        int left = 0;
-        int right = len - 1;
+    public static long findKthLargest(long[] nums, int k, int l, int r) {
+        int left = l;
+        int right = r - 1;
         while (true) {
-            int index = partition(nums, left, right);
+            int index = partition(nums, left, right) + l;
             if (index == k) {
                 return nums[index];
             } else if (index < k) {
@@ -18,6 +17,10 @@ public class SortUtil {
                 right = index - 1;
             }
         }
+    }
+
+    public static long findKthLargest(long[] nums, int k) {
+        return findKthLargest(nums, k, 0, nums.length);
     }
 
     private static int partition(long[] nums, int left, int right) {
