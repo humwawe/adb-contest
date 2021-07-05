@@ -5,7 +5,7 @@ package com.aliyun.adb.contest.constants;
  */
 public interface Constants {
 
-    int BUCKET_SIZE = 93;
+    int BUCKET_SIZE = 930;
 
     int SEGMENT_MARGE = 50;
     int SEGMENT_SIZE = 512 * 1024 - SEGMENT_MARGE;
@@ -24,8 +24,8 @@ public interface Constants {
 
     int COMPUTE_NUM_CORE = 6;
 
-    //   1000000000;
-    int RECORD_SUM = 1000000000;
+    // local 50000000 ,  prod  1000000000;
+    int RECORD_SUM = 50000000;
 
 
     int COLUMN_NUM = 2;

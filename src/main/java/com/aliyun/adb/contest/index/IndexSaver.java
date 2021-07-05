@@ -33,7 +33,7 @@ public class IndexSaver {
         }
         buffer.flip();
         fileChannel.write(buffer);
-        fileChannel.force(false);
+        fileChannel.force(true);
         fileChannel.close();
 
     }
@@ -50,7 +50,7 @@ public class IndexSaver {
         }
         buffer.flip();
         fileChannel.write(buffer);
-        fileChannel.force(false);
+        fileChannel.force(true);
         fileChannel.close();
     }
 
