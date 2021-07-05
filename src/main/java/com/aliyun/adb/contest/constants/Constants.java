@@ -25,7 +25,7 @@ public interface Constants {
     int COMPUTE_NUM_CORE = 6;
 
     //   1000000000;
-    int RECORD_SUM = 50000000;
+    int RECORD_SUM = 1000000000;
 
 
     int COLUMN_NUM = 2;
