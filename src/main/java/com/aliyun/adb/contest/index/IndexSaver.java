@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class IndexSaver {
     public static void saveIndex() throws IOException {
-        saveHotPoint();
+//        saveHotPoint();
         saveEnvInfo();
         saveIndexAccumulator();
         saveBucket();

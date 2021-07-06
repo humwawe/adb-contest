@@ -40,9 +40,9 @@ public class HumAnalyticDB implements AnalyticDB {
             sumIndex();
             logger.info("Index data accumulated");
 
-            logger.info("begin to accumulate hot point");
-            getHotPoint();
-            logger.info("hot point accumulated");
+//            logger.info("begin to accumulate hot point");
+//            getHotPoint();
+//            logger.info("hot point accumulated");
 
             logger.info("begin to write index data");
             IndexSaver.saveIndex();
@@ -68,7 +68,6 @@ public class HumAnalyticDB implements AnalyticDB {
         }
         service.shutdown();
         service.awaitTermination(100000, TimeUnit.MINUTES);
-
     }
 
 
@@ -107,11 +106,11 @@ public class HumAnalyticDB implements AnalyticDB {
         logger.info("Thread %d Start quantile table: %s, column: %s, percentile %f ", Thread.currentThread().getId(), table, column, percentile);
         int rank = (int) Math.round(IndexAccumulator.sum * percentile);
         int columnIndex = EnvInfo.tableColumn2Index.get(Convert.tableColumnKey(table, column));
-        if (rank % Constants.SPLIT_START == 0) {
-            int hotPointIndex = rank / Constants.SPLIT_START;
-            logger.info("cache hit! rank: %d", rank);
-            return String.valueOf(IndexPointRunner.res[columnIndex][hotPointIndex - 1]);
-        }
+//        if (rank % Constants.SPLIT_START == 0) {
+//            int hotPointIndex = rank / Constants.SPLIT_START;
+//            logger.info("cache hit! rank: %d", rank);
+//            return String.valueOf(IndexPointRunner.res[columnIndex][hotPointIndex - 1]);
+//        }
 
         int bucketKey = SearchUtil.lowerBound(IndexAccumulator.bucketCounts[columnIndex], rank);
         long rankInBucket;

@@ -12,11 +12,15 @@ import java.util.concurrent.ExecutorService;
 public class Bucket {
     public static int[][][] bucketCounts;
 
-    public static int encode(int byte1, int byte2) {
+    public static int encode(byte byte1, byte byte2, byte byte3) {
+        return (byte1 - '0') * 100 + (byte2 - '0') * 10 + (byte3 - '0');
+    }
+
+    public static int encode(byte byte1, byte byte2) {
         return (byte1 - '0') * 10 + byte2 - '0';
     }
 
-    public static int encode(int byte1) {
+    public static int encode(byte byte1) {
         return byte1 - '0';
     }
 

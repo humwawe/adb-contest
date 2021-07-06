@@ -15,15 +15,11 @@ import java.util.Map;
  */
 public class IndexLoader {
     public static void loadIndexData(String workspaceDir) throws IOException {
-        Map<String, Integer> tableColumn2Index = loadEnvInfo(workspaceDir);
-        int[][] bucketCountsSum = loadIndexAccumulator(workspaceDir);
-        int[][][] bucketCounts = loadBucket(workspaceDir);
-        long[][] hotPoints = loadHotPoint(workspaceDir);
-        IndexPointRunner.res = hotPoints;
-        EnvInfo.tableColumn2Index = tableColumn2Index;
+//        IndexPointRunner.res = loadHotPoint(workspaceDir);
+        EnvInfo.tableColumn2Index = loadEnvInfo(workspaceDir);
         EnvInfo.workspace = workspaceDir;
-        IndexAccumulator.bucketCounts = bucketCountsSum;
-        Bucket.bucketCounts = bucketCounts;
+        IndexAccumulator.bucketCounts = loadIndexAccumulator(workspaceDir);
+        Bucket.bucketCounts = loadBucket(workspaceDir);
     }
 
     private static long[][] loadHotPoint(String workspaceDir) throws IOException {

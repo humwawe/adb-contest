@@ -53,21 +53,21 @@ public class IndexPointRunner implements Runnable {
             }
             logger.info("columnId %d, getResList end", columnId);
             int start = rankInBucket;
-            int left = 0;
-            while (left + rankInBucket <= cnt) {
-//                long kth = Convert.kth2FinalKthLong(SortUtil.findKthLargest(list, rankInBucket - 1, left, cnt), bucketKey);
-                long kth = Convert.kth2FinalKthLong(SortUtil.quickSelect(list, rankInBucket, left, cnt - 1), bucketKey);
-                res[columnId][index++] = kth;
-                left += rankInBucket;
-                rankInBucket = split;
-            }
-            rank += rankInBucket + left - start;
-//            Arrays.sort(list);
-//            while (rankInBucket <= cnt) {
-//                res[columnId][index++] = Convert.kth2FinalKthLong(list[rankInBucket - 1], bucketKey);
-//                rankInBucket += split;
+//            int left = 0;
+//            while (left + rankInBucket <= cnt) {
+////                long kth = Convert.kth2FinalKthLong(SortUtil.findKthLargest(list, rankInBucket - 1, left, cnt), bucketKey);
+//                long kth = Convert.kth2FinalKthLong(SortUtil.quickSelect(list, rankInBucket, left, cnt - 1), bucketKey);
+//                res[columnId][index++] = kth;
+//                left += rankInBucket;
+//                rankInBucket = split;
 //            }
-//            rank += rankInBucket - start;
+//            rank += rankInBucket + left - start;
+            Arrays.sort(list, 0, cnt);
+            while (rankInBucket <= cnt) {
+                res[columnId][index++] = Convert.kth2FinalKthLong(list[rankInBucket - 1], bucketKey);
+                rankInBucket += split;
+            }
+            rank += rankInBucket - start;
             logger.info("columnId %d, get bucketKey hot point end", columnId);
         }
 
