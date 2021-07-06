@@ -132,8 +132,8 @@ public class HumAnalyticDB implements AnalyticDB {
 
         Bucket.getResList(columnIndex, bucketKey, executorService, list);
 
-//        long kth = SortUtil.findKthLargest(list, (int) (rankInBucket - 1));
-        long kth = SortUtil.quickSelect(list, rankInBucket, 0, cnt - 1);
+        long kth = SortUtil.findKthLargest(list, (rankInBucket - 1), 0, cnt);
+//        long kth = SortUtil.quickSelect(list, rankInBucket, 0, cnt - 1);
         String res = Convert.kth2FinalKthString(kth, bucketKey);
         logger.info("rank: %d, bucketKey: %d,cnt: %d, res: %s", rank, bucketKey, cnt, res);
         logger.info("end query  time: %d", System.currentTimeMillis() - start);

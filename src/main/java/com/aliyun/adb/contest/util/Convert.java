@@ -49,9 +49,9 @@ public class Convert {
 
     public static String kth2FinalKthString(long kth, int bucketKey) {
         int len = 0;
-        if (bucketKey > 100) {
+        if (bucketKey > 99) {
             len = 19;
-        } else if (bucketKey > 10) {
+        } else if (bucketKey > 9) {
             len = 18;
         } else if (bucketKey > 0) {
             len = 17;
