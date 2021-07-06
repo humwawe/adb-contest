@@ -98,8 +98,9 @@ public class HumAnalyticDB implements AnalyticDB {
 //        queryExecutor.queryFile();
 //        return queryExecutor.getResult();
 //    }
-    ExecutorService executorService = Executors.newFixedThreadPool(12);
-    //    long[] list = new long[IndexAccumulator.maxBucketKeySize];
+    ExecutorService executorService = Executors.newFixedThreadPool(16);
+
+    ThreadLocal<long[]> threadLocalList = new ThreadLocal<>();
 
     @Override
     public String quantile(String table, String column, double percentile) throws Exception {
@@ -123,7 +124,12 @@ public class HumAnalyticDB implements AnalyticDB {
             rankInBucket = rank - IndexAccumulator.bucketCounts[columnIndex][bucketKey - 1];
             cnt = IndexAccumulator.bucketCounts[columnIndex][bucketKey] - IndexAccumulator.bucketCounts[columnIndex][bucketKey - 1];
         }
-        long[] list = new long[cnt];
+        if (threadLocalList.get() == null) {
+            long[] list = new long[IndexAccumulator.maxBucketKeySize];
+            threadLocalList.set(list);
+        }
+        long[] list = threadLocalList.get();
+
         Bucket.getResList(columnIndex, bucketKey, executorService, list);
 
 //        long kth = SortUtil.findKthLargest(list, (int) (rankInBucket - 1));
