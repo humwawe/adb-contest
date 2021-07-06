@@ -3,6 +3,7 @@ package com.aliyun.adb.contest.index;
 import com.aliyun.adb.contest.constants.Constants;
 import com.aliyun.adb.contest.util.*;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +15,7 @@ public class IndexPointRunner implements Runnable {
     private static final Logger logger = Logger.GLOBAL_LOGGER;
     private static final int split = Constants.SPLIT_START;
     private static final int num = Constants.RECORD_SUM / split;
-    private static long[][] res = new long[4][num];
+    public static long[][] res = new long[4][num];
 
     ExecutorService executorService = Executors.newFixedThreadPool(Constants.WRITE_NUM_CORE);
     int columnId;
@@ -50,13 +51,20 @@ public class IndexPointRunner implements Runnable {
                 e.printStackTrace();
             }
             int start = rankInBucket;
-            int left = 0;
-            while (left + rankInBucket <= cnt) {
-                long kth = Convert.kth2FinalKthLong(SortUtil.findKthLargest(list, rankInBucket - 1, left, cnt), bucketKey);
-                res[columnId][index++] = kth;
-                left += rankInBucket;
+//            int left = 0;
+//            while (left + rankInBucket <= cnt) {
+//                long kth = Convert.kth2FinalKthLong(SortUtil.findKthLargest(list, rankInBucket - 1, left, cnt), bucketKey);
+//                res[columnId][index++] = kth;
+//                left += rankInBucket;
+//                rankInBucket = split;
+//            }
+//            rank += rankInBucket + left - start;
+            Arrays.sort(list);
+            while (rankInBucket <= cnt) {
+                res[columnId][index++] = Convert.kth2FinalKthLong(list[rankInBucket - 1], bucketKey);
+                rankInBucket += split;
             }
-            rank += rankInBucket + left - start;
+            rank += rankInBucket - start;
         }
 
         executorService.shutdown();

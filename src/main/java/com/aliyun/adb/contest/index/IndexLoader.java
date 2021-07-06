@@ -18,10 +18,29 @@ public class IndexLoader {
         Map<String, Integer> tableColumn2Index = loadEnvInfo(workspaceDir);
         int[][] bucketCountsSum = loadIndexAccumulator(workspaceDir);
         int[][][] bucketCounts = loadBucket(workspaceDir);
+        long[][] hotPoints = loadHotPoint(workspaceDir);
+        IndexPointRunner.res = hotPoints;
         EnvInfo.tableColumn2Index = tableColumn2Index;
         EnvInfo.workspace = workspaceDir;
         IndexAccumulator.bucketCounts = bucketCountsSum;
         Bucket.bucketCounts = bucketCounts;
+    }
+
+    private static long[][] loadHotPoint(String workspaceDir) throws IOException {
+        File file = new File(workspaceDir, Constants.HOT_POINT);
+        FileChannel fileChannel = new RandomAccessFile(file, "r").getChannel();
+        int num = Constants.RECORD_SUM / Constants.SPLIT_START;
+        long[][] hotPoints = new long[4][num];
+        ByteBuffer buffer = ByteBuffer.allocate(hotPoints.length * hotPoints[0].length * 8);
+        fileChannel.read(buffer);
+        buffer.flip();
+        for (int i = 0; i < hotPoints.length; i++) {
+            for (int j = 0; j < hotPoints[0].length; j++) {
+                hotPoints[i][j] = buffer.getLong();
+            }
+        }
+        fileChannel.close();
+        return hotPoints;
     }
 
     private static int[][][] loadBucket(String workspaceDir) throws IOException {

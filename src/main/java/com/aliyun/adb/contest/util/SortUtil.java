@@ -8,10 +8,11 @@ public class SortUtil {
         int left = l;
         int right = r - 1;
         while (true) {
-            int index = partition(nums, left, right) + l;
-            if (index == k) {
+            assert left <= right;
+            int index = partition(nums, left, right);
+            if (index == k + l) {
                 return nums[index];
-            } else if (index < k) {
+            } else if (index < k + l) {
                 left = index + 1;
             } else {
                 right = index - 1;

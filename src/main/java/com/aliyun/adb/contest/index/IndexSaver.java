@@ -14,9 +14,27 @@ import java.util.Map;
  */
 public class IndexSaver {
     public static void saveIndex() throws IOException {
+        saveHotPoint();
         saveEnvInfo();
         saveIndexAccumulator();
         saveBucket();
+    }
+
+    private static void saveHotPoint() throws IOException {
+        File file = new File(EnvInfo.workspace, Constants.HOT_POINT);
+        FileChannel fileChannel = new RandomAccessFile(file, "rw").getChannel();
+        long[][] hotPoints = IndexPointRunner.res;
+        ByteBuffer buffer = ByteBuffer.allocate(hotPoints.length * hotPoints[0].length * 8);
+        for (long[] hotPoint : hotPoints) {
+            for (long p : hotPoint) {
+                buffer.putLong(p);
+            }
+        }
+        buffer.flip();
+        fileChannel.write(buffer);
+        fileChannel.force(true);
+        fileChannel.close();
+
     }
 
     private static void saveBucket() throws IOException {

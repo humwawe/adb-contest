@@ -55,6 +55,7 @@ public class HumAnalyticDB implements AnalyticDB {
             logger.info("second stage");
             logger.info("begin to load index");
             IndexLoader.loadIndexData(workspaceDir);
+            logger.info("index loaded");
         }
 
 //        throw new RuntimeException("test");
@@ -104,8 +105,13 @@ public class HumAnalyticDB implements AnalyticDB {
     public String quantile(String table, String column, double percentile) throws Exception {
         long start = System.currentTimeMillis();
         logger.info("Thread %d Start quantile table: %s, column: %s, percentile %f ", Thread.currentThread().getId(), table, column, percentile);
-        long rank = Math.round(IndexAccumulator.sum * percentile);
+        int rank = (int) Math.round(IndexAccumulator.sum * percentile);
         int columnIndex = EnvInfo.tableColumn2Index.get(Convert.tableColumnKey(table, column));
+        if (rank % Constants.SPLIT_START == 0) {
+            int hotPointIndex = rank / Constants.SPLIT_START;
+            logger.info("cache hit! rank: %d, %d", rank, hotPointIndex);
+            return String.valueOf(IndexPointRunner.res[columnIndex][hotPointIndex - 1]);
+        }
 
         int bucketKey = SearchUtil.lowerBound(IndexAccumulator.bucketCounts[columnIndex], rank);
         long rankInBucket;
@@ -122,7 +128,7 @@ public class HumAnalyticDB implements AnalyticDB {
 
         long kth = SortUtil.findKthLargest(list, (int) (rankInBucket - 1));
         String res = Convert.kth2FinalKthString(kth, bucketKey);
-        logger.info("rank: %d, bucketKey: %d, res: %s", rank, bucketKey, res);
+        logger.info("rank: %d, bucketKey: %d,cnt: %d, res: %s", rank, bucketKey, cnt, res);
         logger.info("end query  time: %d", System.currentTimeMillis() - start);
         return res;
     }
