@@ -1,6 +1,7 @@
 package com.aliyun.adb.contest.index;
 
 import com.aliyun.adb.contest.constants.Constants;
+import com.aliyun.adb.contest.constants.EnvInfo;
 import com.aliyun.adb.contest.util.*;
 
 import java.util.Arrays;
@@ -16,7 +17,7 @@ public class IndexPointRunner implements Runnable {
     private static final int split = Constants.SPLIT_START;
     private static final int num = Constants.RECORD_SUM / split;
     public static long[][] res = new long[4][num];
-
+    long[] list = new long[IndexAccumulator.maxBucketKeySize];
     ExecutorService executorService = Executors.newFixedThreadPool(Constants.WRITE_NUM_CORE);
     int columnId;
     int index;
@@ -43,28 +44,31 @@ public class IndexPointRunner implements Runnable {
                 rankInBucket = rank - IndexAccumulator.bucketCounts[columnId][bucketKey - 1];
                 cnt = IndexAccumulator.bucketCounts[columnId][bucketKey] - IndexAccumulator.bucketCounts[columnId][bucketKey - 1];
             }
+            logger.info("columnId %d, rank:%d, bucketKey: %d, cnt: %d", columnId, rank, bucketKey, cnt);
 
-            long[] list = new long[cnt];
             try {
                 Bucket.getResList(columnId, bucketKey, executorService, list);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            logger.info("columnId %d, getResList end", columnId);
             int start = rankInBucket;
-//            int left = 0;
-//            while (left + rankInBucket <= cnt) {
+            int left = 0;
+            while (left + rankInBucket <= cnt) {
 //                long kth = Convert.kth2FinalKthLong(SortUtil.findKthLargest(list, rankInBucket - 1, left, cnt), bucketKey);
-//                res[columnId][index++] = kth;
-//                left += rankInBucket;
-//                rankInBucket = split;
-//            }
-//            rank += rankInBucket + left - start;
-            Arrays.sort(list);
-            while (rankInBucket <= cnt) {
-                res[columnId][index++] = Convert.kth2FinalKthLong(list[rankInBucket - 1], bucketKey);
-                rankInBucket += split;
+                long kth = Convert.kth2FinalKthLong(SortUtil.quickSelect(list, rankInBucket, left, cnt - 1), bucketKey);
+                res[columnId][index++] = kth;
+                left += rankInBucket;
+                rankInBucket = split;
             }
-            rank += rankInBucket - start;
+            rank += rankInBucket + left - start;
+//            Arrays.sort(list);
+//            while (rankInBucket <= cnt) {
+//                res[columnId][index++] = Convert.kth2FinalKthLong(list[rankInBucket - 1], bucketKey);
+//                rankInBucket += split;
+//            }
+//            rank += rankInBucket - start;
+            logger.info("columnId %d, get bucketKey hot point end", columnId);
         }
 
         executorService.shutdown();

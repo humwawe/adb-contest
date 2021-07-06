@@ -109,7 +109,7 @@ public class HumAnalyticDB implements AnalyticDB {
         int columnIndex = EnvInfo.tableColumn2Index.get(Convert.tableColumnKey(table, column));
         if (rank % Constants.SPLIT_START == 0) {
             int hotPointIndex = rank / Constants.SPLIT_START;
-            logger.info("cache hit! rank: %d, %d", rank, hotPointIndex);
+            logger.info("cache hit! rank: %d", rank);
             return String.valueOf(IndexPointRunner.res[columnIndex][hotPointIndex - 1]);
         }
 

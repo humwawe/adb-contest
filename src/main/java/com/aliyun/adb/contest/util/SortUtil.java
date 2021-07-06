@@ -4,6 +4,44 @@ package com.aliyun.adb.contest.util;
  * @author hum
  */
 public class SortUtil {
+    // max kth
+    public static long quickSelect(long[] nums, int k, int start, int end) {
+        while (true) {
+            if (start == end) {
+                return nums[start];
+            }
+            int left = start;
+            int right = end;
+            long pivot = nums[(start + end) >> 1];
+            while (left <= right) {
+                while (left <= right && nums[left] < pivot) {
+                    left++;
+                }
+                while (left <= right && nums[right] > pivot) {
+                    right--;
+                }
+                if (left <= right) {
+                    long temp = nums[left];
+                    nums[left] = nums[right];
+                    nums[right] = temp;
+                    left++;
+                    right--;
+                }
+            }
+            if (start + k - 1 <= right) {
+                end = right;
+//                return quickSelect(nums, k, start, right);
+            } else if (start + k - 1 >= left) {
+                k = k - (left - start);
+                start = left;
+//                return quickSelect(nums, k - (left - start), left, end);
+            } else {
+                return nums[right + 1];
+            }
+        }
+
+    }
+
     public static long findKthLargest(long[] nums, int k, int l, int r) {
         int left = l;
         int right = r - 1;

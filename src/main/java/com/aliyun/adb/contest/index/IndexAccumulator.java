@@ -14,6 +14,7 @@ public class IndexAccumulator {
     public static int sum = Constants.RECORD_SUM;
     public static int sum1;
     public static int sum2;
+    public static int maxBucketKeySize = 0;
 
     public static void sumIndex() {
         bucketCounts = new int[EnvInfo.size][Constants.BUCKET_SIZE];
@@ -23,6 +24,7 @@ public class IndexAccumulator {
                 for (int threadId = 0; threadId < Bucket.bucketCounts.length; threadId++) {
                     tmp += Bucket.bucketCounts[threadId][columnId][bucketKey];
                 }
+                maxBucketKeySize = Math.max(maxBucketKeySize, tmp);
                 if (bucketKey == 0) {
                     bucketCounts[columnId][bucketKey] = tmp;
                 } else {
@@ -35,5 +37,7 @@ public class IndexAccumulator {
         sum2 = bucketCounts[2][Constants.BUCKET_SIZE - 1];
         logger.info("record sum1 %d", sum1);
         logger.info("record sum2 %d", sum2);
+        logger.info("record maxBucketKeySize %d", maxBucketKeySize);
+
     }
 }
