@@ -15,14 +15,14 @@ import java.util.Map;
  */
 public class IndexLoader {
     public static void loadIndexData(String workspaceDir) throws IOException {
-//        IndexPointRunner.res = loadHotPoint(workspaceDir);
-        EnvInfo.tableColumn2Index = loadEnvInfo(workspaceDir);
+//        loadHotPoint(workspaceDir);
         EnvInfo.workspace = workspaceDir;
-        IndexAccumulator.bucketCounts = loadIndexAccumulator(workspaceDir);
-        Bucket.bucketCounts = loadBucket(workspaceDir);
+        loadEnvInfo(workspaceDir);
+        loadIndexAccumulator(workspaceDir);
+        loadBucket(workspaceDir);
     }
 
-    private static long[][] loadHotPoint(String workspaceDir) throws IOException {
+    private static void loadHotPoint(String workspaceDir) throws IOException {
         File file = new File(workspaceDir, Constants.HOT_POINT);
         FileChannel fileChannel = new RandomAccessFile(file, "r").getChannel();
         int num = Constants.RECORD_SUM / Constants.SPLIT_START;
@@ -36,10 +36,10 @@ public class IndexLoader {
             }
         }
         fileChannel.close();
-        return hotPoints;
+        IndexPointRunner.res = hotPoints;
     }
 
-    private static int[][][] loadBucket(String workspaceDir) throws IOException {
+    private static void loadBucket(String workspaceDir) throws IOException {
         File file = new File(workspaceDir, Constants.BUCKET_DATA);
         FileChannel fileChannel = new RandomAccessFile(file, "r").getChannel();
         int[][][] bucketCounts = new int[Constants.COMPUTE_NUM_CORE][Constants.COLUMN_NUM * 2][Constants.BUCKET_SIZE];
@@ -55,16 +55,17 @@ public class IndexLoader {
         }
 
         fileChannel.close();
-        return bucketCounts;
+        Bucket.bucketCounts = bucketCounts;
     }
 
-    private static int[][] loadIndexAccumulator(String workspaceDir) throws IOException {
+    private static void loadIndexAccumulator(String workspaceDir) throws IOException {
         File file = new File(workspaceDir, Constants.INDEX_DATA);
         FileChannel fileChannel = new RandomAccessFile(file, "r").getChannel();
         int[][] bucketCountsSum = new int[Constants.COLUMN_NUM * 2][Constants.BUCKET_SIZE];
-        ByteBuffer buffer = ByteBuffer.allocate(bucketCountsSum.length * bucketCountsSum[0].length * 4);
+        ByteBuffer buffer = ByteBuffer.allocate(bucketCountsSum.length * bucketCountsSum[0].length * 4 + 4);
         fileChannel.read(buffer);
         buffer.flip();
+        IndexAccumulator.maxBucketKeySize = buffer.getInt();
         for (int i = 0; i < bucketCountsSum.length; i++) {
             for (int j = 0; j < bucketCountsSum[0].length; j++) {
                 bucketCountsSum[i][j] = buffer.getInt();
@@ -72,10 +73,11 @@ public class IndexLoader {
         }
 
         fileChannel.close();
-        return bucketCountsSum;
+        IndexAccumulator.bucketCounts = bucketCountsSum;
+
     }
 
-    private static Map<String, Integer> loadEnvInfo(String workspaceDir) throws IOException {
+    private static void loadEnvInfo(String workspaceDir) throws IOException {
         File file = new File(workspaceDir, Constants.ENV_INFO);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         Map<String, Integer> tableColumn2Index = new HashMap<>();
@@ -85,6 +87,6 @@ public class IndexLoader {
             tableColumn2Index.put(tableColumn, colId);
         }
         reader.close();
-        return tableColumn2Index;
+        EnvInfo.tableColumn2Index = tableColumn2Index;
     }
 }

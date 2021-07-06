@@ -5,6 +5,7 @@ import com.aliyun.adb.contest.constants.EnvInfo;
 import com.aliyun.adb.contest.index.*;
 import com.aliyun.adb.contest.spi.AnalyticDB;
 import com.aliyun.adb.contest.util.*;
+import com.sun.tools.doclint.Env;
 
 import java.io.File;
 import java.io.IOException;
@@ -99,6 +100,7 @@ public class HumAnalyticDB implements AnalyticDB {
 //        return queryExecutor.getResult();
 //    }
     ExecutorService executorService = Executors.newFixedThreadPool(12);
+    //    long[] list = new long[IndexAccumulator.maxBucketKeySize];
 
     @Override
     public String quantile(String table, String column, double percentile) throws Exception {
@@ -113,7 +115,7 @@ public class HumAnalyticDB implements AnalyticDB {
 //        }
 
         int bucketKey = SearchUtil.lowerBound(IndexAccumulator.bucketCounts[columnIndex], rank);
-        long rankInBucket;
+        int rankInBucket;
         int cnt;
         if (bucketKey == 0) {
             rankInBucket = rank;
@@ -125,7 +127,8 @@ public class HumAnalyticDB implements AnalyticDB {
         long[] list = new long[cnt];
         Bucket.getResList(columnIndex, bucketKey, executorService, list);
 
-        long kth = SortUtil.findKthLargest(list, (int) (rankInBucket - 1));
+//        long kth = SortUtil.findKthLargest(list, (int) (rankInBucket - 1));
+        long kth = SortUtil.quickSelect(list, rankInBucket, 0, cnt - 1);
         String res = Convert.kth2FinalKthString(kth, bucketKey);
         logger.info("rank: %d, bucketKey: %d,cnt: %d, res: %s", rank, bucketKey, cnt, res);
         logger.info("end query  time: %d", System.currentTimeMillis() - start);
