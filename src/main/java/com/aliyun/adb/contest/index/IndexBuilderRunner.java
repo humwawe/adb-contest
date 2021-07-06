@@ -113,17 +113,13 @@ public class IndexBuilderRunner implements Runnable {
 //        pos++;
 
         if (len == 19) {
-//            int bucketKey = Bucket.encode(readBuffer[startPosition++], readBuffer[startPosition++]);
             int bucketKey = Bucket.encode(readBuffer[startPosition++], readBuffer[startPosition++], readBuffer[startPosition++]);
             Bucket.bucketCounts[id][columnId][bucketKey]++;
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
-//            writeManager.putLong(id, columnId, bucketKey, num);
         } else if (len == 18) {
-//            int bucketKey = Bucket.encode(readBuffer[startPosition++]);
             int bucketKey = Bucket.encode(readBuffer[startPosition++], readBuffer[startPosition++]);
             Bucket.bucketCounts[id][columnId][bucketKey]++;
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
-//            writeManager.putLong(id, columnId, bucketKey, num);
         } else if (len == 17) {
             int bucketKey = Bucket.encode(readBuffer[startPosition++]);
             Bucket.bucketCounts[id][columnId][bucketKey]++;
