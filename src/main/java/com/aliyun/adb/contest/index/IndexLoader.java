@@ -22,22 +22,22 @@ public class IndexLoader {
         loadBucket(workspaceDir);
     }
 
-    private static void loadHotPoint(String workspaceDir) throws IOException {
-        File file = new File(workspaceDir, Constants.HOT_POINT);
-        FileChannel fileChannel = new RandomAccessFile(file, "r").getChannel();
-        int num = Constants.RECORD_SUM / Constants.SPLIT_START;
-        long[][] hotPoints = new long[4][num];
-        ByteBuffer buffer = ByteBuffer.allocate(hotPoints.length * hotPoints[0].length * 8);
-        fileChannel.read(buffer);
-        buffer.flip();
-        for (int i = 0; i < hotPoints.length; i++) {
-            for (int j = 0; j < hotPoints[0].length; j++) {
-                hotPoints[i][j] = buffer.getLong();
-            }
-        }
-        fileChannel.close();
-        IndexPointRunner.res = hotPoints;
-    }
+//    private static void loadHotPoint(String workspaceDir) throws IOException {
+//        File file = new File(workspaceDir, Constants.HOT_POINT);
+//        FileChannel fileChannel = new RandomAccessFile(file, "r").getChannel();
+//        int num = Constants.RECORD_SUM / Constants.SPLIT_START;
+//        long[][] hotPoints = new long[4][num];
+//        ByteBuffer buffer = ByteBuffer.allocate(hotPoints.length * hotPoints[0].length * 8);
+//        fileChannel.read(buffer);
+//        buffer.flip();
+//        for (int i = 0; i < hotPoints.length; i++) {
+//            for (int j = 0; j < hotPoints[0].length; j++) {
+//                hotPoints[i][j] = buffer.getLong();
+//            }
+//        }
+//        fileChannel.close();
+//        IndexPointRunner.res = hotPoints;
+//    }
 
     private static void loadBucket(String workspaceDir) throws IOException {
         File file = new File(workspaceDir, Constants.BUCKET_DATA);
