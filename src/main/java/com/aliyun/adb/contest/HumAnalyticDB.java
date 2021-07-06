@@ -5,7 +5,6 @@ import com.aliyun.adb.contest.constants.EnvInfo;
 import com.aliyun.adb.contest.index.*;
 import com.aliyun.adb.contest.spi.AnalyticDB;
 import com.aliyun.adb.contest.util.*;
-import com.sun.tools.doclint.Env;
 
 import java.io.File;
 import java.io.IOException;
