@@ -8,12 +8,12 @@ public interface Constants {
     int BUCKET_SIZE = 930;
 
     int SEGMENT_MARGE = 50;
-    int SEGMENT_SIZE = 512 * 1024 - SEGMENT_MARGE;
+    int SEGMENT_SIZE = 256 * 1024 - SEGMENT_MARGE;
 
     int READ_NUM_CORE = 6;
 //    int READ_BUFFER_NUM = 1 << 6;
 
-    int WRITE_BUFFER_SIZE = 96 * 1024;
+    int WRITE_BUFFER_SIZE = 64 * 1024;
 
     int WRITE_NUM_CORE = 6;
 
