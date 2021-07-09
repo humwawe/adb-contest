@@ -1,12 +1,10 @@
 package com.aliyun.adb.contest.write;
 
-import com.aliyun.adb.contest.constants.Constants;
 import com.aliyun.adb.contest.util.Convert;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 /**
  * @author hum
@@ -17,20 +15,20 @@ public class WriterBucket {
     private final int bufNum = 2;
 
     private final ByteBuffer[] buffers = new ByteBuffer[bufNum];
-    private final Future[] futures = new Future[bufNum];
-
+    //    private final Future[] futures = new Future[bufNum];
+//
     private int index = 0;
-    private final ExecutorService executorService;
+//    private final ExecutorService executorService;
 
 
     public WriterBucket(int threadId, int columnId, int bucketKey, FileChannel fileChannel) {
         this.fileChannel = fileChannel;
-        executorService = WriteExecutor.getExecutorService(threadId);
-        for (int i = 0; i < bufNum; i++) {
-            buffers[i] = ByteBuffer.allocate(Constants.WRITE_BUFFER_SIZE);
-            futures[i] = executorService.submit(() -> {
-            });
-        }
+//        executorService = WriteExecutor.getExecutorService(threadId);
+//        for (int i = 0; i < bufNum; i++) {
+//            buffers[i] = ByteBuffer.allocate(Constants.WRITE_BUFFER_SIZE);
+//            futures[i] = executorService.submit(() -> {
+//            });
+//        }
     }
 
 
@@ -39,20 +37,25 @@ public class WriterBucket {
             ByteBuffer tmpBuffer = buffers[index];
             int newIndex = (index + 1) & 1;
             tmpBuffer.flip();
-            if (!futures[newIndex].isDone()) {
-                System.out.println("data block");
-                try {
-                    futures[newIndex].get();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            futures[index] = executorService.submit(() -> fileChannel.write(tmpBuffer));
+//            if (!futures[newIndex].isDone()) {
+//                System.out.println("data block");
+//                try {
+//                    futures[newIndex].get();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            futures[index] = executorService.submit(() -> fileChannel.write(tmpBuffer));
 //            try {
 //                fileChannel.write(tmpBuffer);
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
+            try {
+                fileChannel.write(tmpBuffer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             index = newIndex;
             buffers[index].clear();
         }
@@ -74,33 +77,33 @@ public class WriterBucket {
         buffers[index].putInt(num);
     }
 
-    public void putLong(long num) {
-        if (!buffers[index].hasRemaining()) {
-            ByteBuffer tmpBuffer = buffers[index];
-            int newIndex = (index + 1) & 1;
-            tmpBuffer.flip();
-            if (!futures[newIndex].isDone()) {
-                System.out.println("data block");
-                try {
-                    futures[newIndex].get();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            futures[index] = executorService.submit(() -> fileChannel.write(tmpBuffer));
-            index = newIndex;
-            buffers[index].clear();
-        }
-        buffers[index].putLong(num);
-    }
+//    public void putLong(long num) {
+//        if (!buffers[index].hasRemaining()) {
+//            ByteBuffer tmpBuffer = buffers[index];
+//            int newIndex = (index + 1) & 1;
+//            tmpBuffer.flip();
+//            if (!futures[newIndex].isDone()) {
+//                System.out.println("data block");
+//                try {
+//                    futures[newIndex].get();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            futures[index] = executorService.submit(() -> fileChannel.write(tmpBuffer));
+//            index = newIndex;
+//            buffers[index].clear();
+//        }
+//        buffers[index].putLong(num);
+//    }
 
     public void close() {
         try {
-            for (Future future : futures) {
-                if (!future.isDone()) {
-                    future.get();
-                }
-            }
+//            for (Future future : futures) {
+//                if (!future.isDone()) {
+//                    future.get();
+//                }
+//            }
             if (buffers[index].hasRemaining()) {
                 buffers[index].flip();
                 fileChannel.write(buffers[index]);

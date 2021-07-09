@@ -2,5 +2,4 @@ target
 .idea
 *.iml
 test_big_data
-test_data
 workspace
