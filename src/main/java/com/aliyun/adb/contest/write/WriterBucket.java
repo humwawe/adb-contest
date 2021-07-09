@@ -1,5 +1,6 @@
 package com.aliyun.adb.contest.write;
 
+import com.aliyun.adb.contest.constants.Constants;
 import com.aliyun.adb.contest.util.Convert;
 
 import java.io.IOException;
@@ -24,11 +25,11 @@ public class WriterBucket {
     public WriterBucket(int threadId, int columnId, int bucketKey, FileChannel fileChannel) {
         this.fileChannel = fileChannel;
 //        executorService = WriteExecutor.getExecutorService(threadId);
-//        for (int i = 0; i < bufNum; i++) {
-//            buffers[i] = ByteBuffer.allocate(Constants.WRITE_BUFFER_SIZE);
+        for (int i = 0; i < bufNum; i++) {
+            buffers[i] = ByteBuffer.allocateDirect(Constants.WRITE_BUFFER_SIZE);
 //            futures[i] = executorService.submit(() -> {
 //            });
-//        }
+        }
     }
 
 
