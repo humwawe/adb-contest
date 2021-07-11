@@ -48,11 +48,11 @@ public class WriterBucket {
                 }
             }
             futures[index] = executorService.submit(() -> fileChannel.write(tmpBuffer));
-            try {
-                fileChannel.write(tmpBuffer);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                fileChannel.write(tmpBuffer);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             index = newIndex;
             buffers[index].clear();
         }
