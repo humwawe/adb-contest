@@ -12,11 +12,11 @@ import java.util.concurrent.ExecutorService;
 public class Bucket {
     public static int[][][] bucketCounts;
 
-    public static int encode(byte byte1, byte byte2, byte byte3) {
+    public static int encode(int byte1, int byte2, int byte3) {
         return (byte1 - '0') * 100 + (byte2 - '0') * 10 + (byte3 - '0');
     }
 
-    public static int encode(byte byte1, byte byte2) {
+    public static int encode(int byte1, int byte2) {
         return (byte1 - '0') * 10 + byte2 - '0';
     }
 
@@ -31,7 +31,7 @@ public class Bucket {
             LongReaderRunner longReaderRunner = new LongReaderRunner(threadId, columnIndex, bucketKey, list, sum, latch);
             executorService.submit(longReaderRunner);
             for (int i = 0; i < Constants.READ_NUM_CORE / Constants.WRITE_NUM_CORE; i++) {
-                sum += Bucket.bucketCounts[threadId + i * Constants.WRITE_NUM_CORE][columnIndex][bucketKey];
+                sum += bucketCounts[threadId + i * Constants.WRITE_NUM_CORE][columnIndex][bucketKey];
             }
         }
         latch.await();

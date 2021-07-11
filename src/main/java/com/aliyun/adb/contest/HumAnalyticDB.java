@@ -127,13 +127,12 @@ public class HumAnalyticDB implements AnalyticDB {
         if (threadLocalList.get() == null) {
             long[] list = new long[IndexAccumulator.maxBucketKeySize];
             threadLocalList.set(list);
-            logger.info("init list");
         }
         long[] list = threadLocalList.get();
 
         Bucket.getResList(columnIndex, bucketKey, executorService, list);
 
-        long kth = SortUtil.findKthLargest(list, (rankInBucket - 1), 0, cnt);
+        long kth = SortUtil.findKthLargest(list, rankInBucket - 1, 0, cnt);
 //        long kth = SortUtil.quickSelect(list, rankInBucket, 0, cnt - 1);
         String res = Convert.kth2FinalKthString(kth, bucketKey);
         logger.info("rank: %d, bucketKey: %d,cnt: %d, res: %s", rank, bucketKey, cnt, res);

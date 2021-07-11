@@ -53,11 +53,6 @@ public class WriterBucket {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//            try {
-//                fileChannel.write(tmpBuffer);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             index = newIndex;
             buffers[index].clear();
         }

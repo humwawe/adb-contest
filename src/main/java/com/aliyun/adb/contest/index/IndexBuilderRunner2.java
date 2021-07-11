@@ -26,9 +26,11 @@ public class IndexBuilderRunner2 implements Runnable {
     private final int nextColId = 3;
     static long fileSize;
     final private WriteManager writeManager;
+    int[][] bucketCount;
 
     public IndexBuilderRunner2(int id, WriteManager writeManager, File currentFile) throws FileNotFoundException {
         this.id = id;
+        bucketCount = Bucket.bucketCounts[id];
         this.writeManager = writeManager;
         raf = new RandomAccessFile(currentFile, "r");
         fileSize = currentFile.length();
@@ -113,18 +115,18 @@ public class IndexBuilderRunner2 implements Runnable {
 
         if (len == 19) {
             int bucketKey = Bucket.encode(readBuffer[startPosition++], readBuffer[startPosition++], readBuffer[startPosition++]);
-            Bucket.bucketCounts[id][columnId][bucketKey]++;
+            bucketCount[columnId][bucketKey]++;
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
         } else if (len == 18) {
             int bucketKey = Bucket.encode(readBuffer[startPosition++], readBuffer[startPosition++]);
-            Bucket.bucketCounts[id][columnId][bucketKey]++;
+            bucketCount[columnId][bucketKey]++;
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
         } else if (len == 17) {
             int bucketKey = Bucket.encode(readBuffer[startPosition++]);
-            Bucket.bucketCounts[id][columnId][bucketKey]++;
+            bucketCount[columnId][bucketKey]++;
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
         } else {
-            Bucket.bucketCounts[id][columnId][0]++;
+            bucketCount[columnId][0]++;
             writeManager.putMessage(id, columnId, 0, readBuffer, startPosition, pos);
         }
         pos++;
