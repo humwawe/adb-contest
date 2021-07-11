@@ -58,7 +58,7 @@ public class HumAnalyticDB implements AnalyticDB {
             logger.info("index loaded");
         }
 
-        throw new RuntimeException("test");
+//        throw new RuntimeException("test");
     }
 
     private void getHotPoint() throws InterruptedException {
@@ -127,6 +127,7 @@ public class HumAnalyticDB implements AnalyticDB {
         if (threadLocalList.get() == null) {
             long[] list = new long[IndexAccumulator.maxBucketKeySize];
             threadLocalList.set(list);
+            logger.info("init list");
         }
         long[] list = threadLocalList.get();
 
