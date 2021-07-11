@@ -3,7 +3,6 @@ package com.aliyun.adb.contest.write;
 import com.aliyun.adb.contest.constants.Constants;
 import com.aliyun.adb.contest.util.Convert;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.concurrent.ExecutorService;
@@ -96,11 +95,11 @@ public class WriterBucket {
 
     public void close() {
         try {
-//            for (Future future : futures) {
-//                if (!future.isDone()) {
-//                    future.get();
-//                }
-//            }
+            for (Future future : futures) {
+                if (!future.isDone()) {
+                    future.get();
+                }
+            }
             if (buffers[index].hasRemaining()) {
                 buffers[index].flip();
                 fileChannel.write(buffers[index]);
