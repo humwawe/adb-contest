@@ -13,7 +13,7 @@ public interface Constants {
     int READ_NUM_CORE = 6;
 //    int READ_BUFFER_NUM = 1 << 6;
 
-    int WRITE_BUFFER_SIZE = 16 * 1024;
+    int WRITE_BUFFER_SIZE = 8 * 1024;
 
     int WRITE_NUM_CORE = 6;
 
