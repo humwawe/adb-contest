@@ -98,7 +98,7 @@ public class HumAnalyticDB implements AnalyticDB {
 //        queryExecutor.queryFile();
 //        return queryExecutor.getResult();
 //    }
-    ExecutorService executorService = Executors.newFixedThreadPool(4);
+    ExecutorService executorService = Executors.newFixedThreadPool(12);
 
     ThreadLocal<long[]> threadLocalList = new ThreadLocal<>();
 
