@@ -25,7 +25,7 @@ public interface Constants {
 //    int COMPUTE_NUM_CORE = 6;
 
     // local 50000000 ,  prod  1000000000;
-    int RECORD_SUM = 50000000;
+    int RECORD_SUM = 1000000000;
     // local 1000 ,  prod  10000;
 //    int SPLIT_START = 10000;
 
