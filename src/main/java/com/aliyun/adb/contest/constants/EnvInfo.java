@@ -31,7 +31,7 @@ public class EnvInfo {
     }
 
     private static void initBucket() {
-        Bucket.bucketCounts = new int[Constants.COMPUTE_NUM_CORE][size][Constants.BUCKET_SIZE];
+        Bucket.bucketCounts = new int[Constants.READ_NUM_CORE][size][Constants.BUCKET_SIZE];
     }
 
     private static void initMap() throws IOException {

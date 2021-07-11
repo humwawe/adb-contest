@@ -42,7 +42,7 @@ public class IndexLoader {
     private static void loadBucket(String workspaceDir) throws IOException {
         File file = new File(workspaceDir, Constants.BUCKET_DATA);
         FileChannel fileChannel = new RandomAccessFile(file, "r").getChannel();
-        int[][][] bucketCounts = new int[Constants.COMPUTE_NUM_CORE][Constants.COLUMN_NUM * 2][Constants.BUCKET_SIZE];
+        int[][][] bucketCounts = new int[Constants.READ_NUM_CORE][Constants.COLUMN_NUM * 2][Constants.BUCKET_SIZE];
         ByteBuffer buffer = ByteBuffer.allocateDirect(bucketCounts.length * bucketCounts[0].length * bucketCounts[0][0].length * 4);
         fileChannel.read(buffer);
         buffer.flip();

@@ -20,7 +20,7 @@ public class WriteManager {
     private final FileChannel[][][] fileChannels;
 
     private WriteManager() throws FileNotFoundException {
-        writerBuckets = new WriterBucket[Constants.COMPUTE_NUM_CORE][EnvInfo.size][Constants.BUCKET_SIZE];
+        writerBuckets = new WriterBucket[Constants.READ_NUM_CORE][EnvInfo.size][Constants.BUCKET_SIZE];
 //        memoryBuckets = new MemoryBucket[Constants.WRITE_NUM_CORE][EnvInfo.size][Constants.BUCKET_MEMO_SEPARATE];
         fileChannels = new FileChannel[Constants.WRITE_NUM_CORE][EnvInfo.size][Constants.BUCKET_SIZE];
         for (int i = 0; i < fileChannels.length; i++) {
