@@ -58,7 +58,7 @@ public class HumAnalyticDB implements AnalyticDB {
             logger.info("index loaded");
         }
 
-        throw new RuntimeException("test");
+//        throw new RuntimeException("test");
     }
 
     private void getHotPoint() throws InterruptedException {
