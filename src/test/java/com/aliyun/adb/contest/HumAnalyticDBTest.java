@@ -66,6 +66,7 @@ public class HumAnalyticDBTest extends TestCase {
         try {
             for (int i = 0; i < testCount; i++) {
                 int p = ThreadLocalRandom.current().nextInt(ans.size());
+//                int p = i % ans.size();
                 String[] resultStr = ans.get(p).split(" ");
                 String table = resultStr[0];
                 String column = resultStr[1];
