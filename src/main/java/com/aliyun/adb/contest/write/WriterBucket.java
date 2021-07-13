@@ -27,7 +27,7 @@ public class WriterBucket {
         this.fileChannel = fileChannel;
         executorService = WriteExecutor.getExecutorService(threadId);
         for (int i = 0; i < bufNum; i++) {
-            buffers[i] = ByteBuffer.allocate(Constants.WRITE_BUFFER_SIZE);
+            buffers[i] = ByteBuffer.allocateDirect(Constants.WRITE_BUFFER_SIZE);
             futures[i] = executorService.submit(() -> {
             });
         }
@@ -108,12 +108,6 @@ public class WriterBucket {
             }
         } catch (Exception e) {
             e.printStackTrace(System.out);
-        } finally {
-            try {
-                fileChannel.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
