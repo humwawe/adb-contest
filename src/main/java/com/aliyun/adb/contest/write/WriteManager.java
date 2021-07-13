@@ -23,8 +23,8 @@ public class WriteManager {
         for (int i = 0; i < fileChannels.length; i++) {
             for (int j = 0; j < EnvInfo.size; j++) {
                 for (int k = 0; k < Constants.BUCKET_SIZE; k++) {
-//                    fileChannels[i][j][k] = new RandomAccessFile(new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k)), "rw").getChannel();
-                    fileChannels[i][j][k] = new FileOutputStream(new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k))).getChannel();
+                    fileChannels[i][j][k] = new RandomAccessFile(new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k)), "rw").getChannel();
+//                    fileChannels[i][j][k] = new FileOutputStream(new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k))).getChannel();
                 }
             }
         }

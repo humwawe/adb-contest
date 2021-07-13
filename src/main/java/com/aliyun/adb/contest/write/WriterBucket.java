@@ -103,6 +103,7 @@ public class WriterBucket {
             if (buffers[index].hasRemaining()) {
                 buffers[index].flip();
                 fileChannel.write(buffers[index]);
+                fileChannel.force(false);
                 buffers[index].clear();
             }
         } catch (Exception e) {
