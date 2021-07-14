@@ -5,7 +5,6 @@ import com.aliyun.adb.contest.util.Convert;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -42,12 +41,6 @@ public class LongReaderRunner implements Runnable {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                fileChannel.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         latch.countDown();
     }
