@@ -22,7 +22,7 @@ public interface Constants {
 //    int BUCKET_MEMO_MARGE = 50000;
 //    int BUCKET_MEMO_SIZE = 3600000 / READ_NUM_CORE + BUCKET_MEMO_MARGE;
 
-    int COMPUTE_NUM_CORE = 6;
+//    int COMPUTE_NUM_CORE = 6;
 
     // local 50000000 ,  prod  1000000000;
     int RECORD_SUM = 1000000000;
@@ -41,8 +41,8 @@ public interface Constants {
         return "\nSEGMENT_SIZE: " + SEGMENT_SIZE
                 + "\nREAD_NUM_CORE: " + READ_NUM_CORE
                 + "\nWRITE_NUM_CORE: " + WRITE_NUM_CORE
-                + "\nWRITE_BUFFER_SIZE: " + WRITE_BUFFER_SIZE
-                + "\nCOMPUTE_NUM_CORE:" + COMPUTE_NUM_CORE;
+                + "\nWRITE_BUFFER_SIZE: " + WRITE_BUFFER_SIZE;
+//                + "\nCOMPUTE_NUM_CORE:" + COMPUTE_NUM_CORE;
 //                + "\nREAD_BUFFER_NUM: " + READ_BUFFER_NUM;
     }
 }

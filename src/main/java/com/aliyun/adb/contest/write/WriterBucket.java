@@ -104,7 +104,7 @@ public class WriterBucket {
             e.printStackTrace(System.out);
         } finally {
             try {
-                fileChannel.force(false);
+                fileChannel.force(true);
                 fileChannel.close();
             } catch (IOException e) {
                 e.printStackTrace();
