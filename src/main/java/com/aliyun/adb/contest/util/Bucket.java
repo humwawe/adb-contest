@@ -13,11 +13,18 @@ public class Bucket {
     public static int[][][] bucketCounts;
 
     public static int encode(int byte1, int byte2, int byte3) {
-        return (byte1 - '0') * 100 + (byte2 - '0') * 10 + (byte3 - '0');
+        int t1 = byte1 - '0';
+        int t2 = byte2 - '0';
+        int t3 = byte3 - '0';
+        return (t1 << 6) + (t1 << 5) + (t1 << 2) + (t2 << 3) + (t2 << 1) + t3;
+//        return (byte1 - '0') * 100 + (byte2 - '0') * 10 + (byte3 - '0');
     }
 
     public static int encode(int byte1, int byte2) {
-        return (byte1 - '0') * 10 + byte2 - '0';
+        int t1 = byte1 - '0';
+        int t2 = byte2 - '0';
+        return (t1 << 3) + (t2 << 1) + t2;
+//        return (byte1 - '0') * 10 + byte2 - '0';
     }
 
     public static int encode(byte byte1) {

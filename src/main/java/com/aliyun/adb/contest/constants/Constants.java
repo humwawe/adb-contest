@@ -33,7 +33,7 @@ public interface Constants {
     String INDEX_DATA = "index_data";
     String BUCKET_DATA = "bucket_data";
     String ENV_INFO = "env_info";
-    String HOT_POINT = "hot_point";
+//    String HOT_POINT = "hot_point";
 
     //    int CHANGE_THREAD_ID = COMPUTE_NUM_CORE - 1;
 
