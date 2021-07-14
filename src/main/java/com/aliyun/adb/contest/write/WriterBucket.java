@@ -33,7 +33,6 @@ public class WriterBucket {
         }
     }
 
-
     public void putMessage(byte[] message, int startPosition, int pos) {
         if (!buffers[index].hasRemaining()) {
             ByteBuffer tmpBuffer = buffers[index];
@@ -108,6 +107,13 @@ public class WriterBucket {
             }
         } catch (Exception e) {
             e.printStackTrace(System.out);
+        } finally {
+            try {
+                fileChannel.force(false);
+                fileChannel.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
