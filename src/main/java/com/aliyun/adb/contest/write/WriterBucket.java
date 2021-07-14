@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
 public class WriterBucket {
     private final FileChannel fileChannel;
 
-    private final int bufNum = 4;
+    private final int bufNum = 3;
 
     private final ByteBuffer[] buffers = new ByteBuffer[bufNum];
     private final Future[] futures = new Future[bufNum];
