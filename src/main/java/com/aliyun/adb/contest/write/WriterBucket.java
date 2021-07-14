@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
 public class WriterBucket {
     private final FileChannel fileChannel;
 
-    private final int bufNum = 2;
+    private final int bufNum = 4;
 
     private final ByteBuffer[] buffers = new ByteBuffer[bufNum];
     private final Future[] futures = new Future[bufNum];
@@ -27,7 +27,7 @@ public class WriterBucket {
         this.fileChannel = fileChannel;
         executorService = WriteExecutor.getExecutorService(threadId);
         for (int i = 0; i < bufNum; i++) {
-            buffers[i] = ByteBuffer.allocate(Constants.WRITE_BUFFER_SIZE);
+            buffers[i] = ByteBuffer.allocateDirect(Constants.WRITE_BUFFER_SIZE);
             futures[i] = executorService.submit(() -> {
             });
         }
@@ -36,7 +36,7 @@ public class WriterBucket {
     public void putMessage(byte[] message, int startPosition, int pos) {
         if (!buffers[index].hasRemaining()) {
             ByteBuffer tmpBuffer = buffers[index];
-            int newIndex = (index + 1) & 1;
+            int newIndex = (index + 1) % bufNum;
             tmpBuffer.flip();
             if (!futures[newIndex].isDone()) {
                 System.out.println("data block");
