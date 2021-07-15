@@ -4,7 +4,9 @@ import com.aliyun.adb.contest.constants.Constants;
 import com.aliyun.adb.contest.constants.EnvInfo;
 import com.aliyun.adb.contest.util.Convert;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
 /**
@@ -23,8 +25,8 @@ public class WriteManager {
         for (int i = 0; i < fileChannels.length; i++) {
             for (int j = 0; j < EnvInfo.size; j++) {
                 for (int k = 0; k < Constants.BUCKET_SIZE; k++) {
-                    fileChannels[i][j][k] = new RandomAccessFile(new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k)), "rw").getChannel();
-//                    fileChannels[i][j][k] = new FileOutputStream(new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k))).getChannel();
+//                    fileChannels[i][j][k] = new RandomAccessFile(new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k)), "rw").getChannel();
+                    fileChannels[i][j][k] = new FileOutputStream(new File(EnvInfo.workspace, Convert.threadTableColumnBucket(i, j, k))).getChannel();
                 }
             }
         }

@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
 public class WriteByteBucket {
     private final RandomAccessFile raf;
 
-    private final int bufNum = 3;
+    private final int bufNum = 2;
 
     private final byte[][] buffers = new byte[bufNum][Constants.WRITE_BUFFER_SIZE];
     private final Future[] futures = new Future[bufNum];
@@ -35,7 +35,7 @@ public class WriteByteBucket {
 
     public void putMessage(byte[] message, int startPosition, int pos) {
         if (curOffset == Constants.WRITE_BUFFER_SIZE) {
-            int newIndex = (index + 1) % bufNum;
+            int newIndex = (index + 1) & 1;
             if (!futures[newIndex].isDone()) {
                 System.out.println("data block");
                 try {
