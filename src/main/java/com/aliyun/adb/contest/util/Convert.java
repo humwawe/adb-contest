@@ -38,8 +38,8 @@ public class Convert {
     public static long byte2long(byte[] message, int startPosition, int pos) {
         long res = 0;
         for (int i = startPosition; i < pos; i++) {
-            res = (res << 3) + (res << 1) + (message[i] - '0');
-//            res = res * 10 + (message[i] - '0');
+//            res = (res << 3) + (res << 1) + (message[i] - '0');
+            res = res * 10 + (message[i] - '0');
         }
         return res;
     }
