@@ -50,11 +50,11 @@ public class HumAnalyticDBTest extends TestCase {
         HumAnalyticDB analyticDB2 = new HumAnalyticDB();
         analyticDB2.load(testDataDir.getAbsolutePath(), testWorkspaceDir.getAbsolutePath());
 
-        Executor testWorkers = Executors.newFixedThreadPool(1);
+        Executor testWorkers = Executors.newFixedThreadPool(8);
 
-        CompletableFuture[] futures = new CompletableFuture[1];
+        CompletableFuture[] futures = new CompletableFuture[8];
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 8; i++) {
             futures[i] = CompletableFuture.runAsync(() -> testQuery(analyticDB2, ans, 500), testWorkers);
         }
 
