@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author hum
@@ -51,11 +50,11 @@ public class HumAnalyticDBTest extends TestCase {
         HumAnalyticDB analyticDB2 = new HumAnalyticDB();
         analyticDB2.load(testDataDir.getAbsolutePath(), testWorkspaceDir.getAbsolutePath());
 
-        Executor testWorkers = Executors.newFixedThreadPool(8);
+        Executor testWorkers = Executors.newFixedThreadPool(1);
 
-        CompletableFuture[] futures = new CompletableFuture[8];
+        CompletableFuture[] futures = new CompletableFuture[1];
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 1; i++) {
             futures[i] = CompletableFuture.runAsync(() -> testQuery(analyticDB2, ans, 500), testWorkers);
         }
 
@@ -65,8 +64,8 @@ public class HumAnalyticDBTest extends TestCase {
     private void testQuery(AnalyticDB analyticDB, List<String> ans, int testCount) {
         try {
             for (int i = 0; i < testCount; i++) {
-                int p = ThreadLocalRandom.current().nextInt(ans.size());
-//                int p = i % ans.size();
+//                int p = ThreadLocalRandom.current().nextInt(ans.size());
+                int p = i % ans.size();
                 String[] resultStr = ans.get(p).split(" ");
                 String table = resultStr[0];
                 String column = resultStr[1];
