@@ -95,10 +95,9 @@ public class WriterBucket {
                     future.get();
                 }
             }
-            if (buffers[index].hasRemaining()) {
+            if (buffers[index].position() > 0) {
                 buffers[index].flip();
                 fileChannel.write(buffers[index]);
-                buffers[index].clear();
             }
         } catch (Exception e) {
             e.printStackTrace(System.out);
