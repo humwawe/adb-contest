@@ -104,8 +104,8 @@ public class HumAnalyticDB implements AnalyticDB {
 
     @Override
     public String quantile(String table, String column, double percentile) throws Exception {
-        long start = System.currentTimeMillis();
-        logger.info("Thread %d Start quantile table: %s, column: %s, percentile %f ", Thread.currentThread().getId(), table, column, percentile);
+//        long start = System.currentTimeMillis();
+//        logger.info("Thread %d Start quantile table: %s, column: %s, percentile %f ", Thread.currentThread().getId(), table, column, percentile);
         int rank = (int) Math.round(IndexAccumulator.sum * percentile);
         int columnIndex = EnvInfo.tableColumn2Index.get(Convert.tableColumnKey(table, column));
 //        if (rank % Constants.SPLIT_START == 0) {
@@ -135,8 +135,8 @@ public class HumAnalyticDB implements AnalyticDB {
         long kth = SortUtil.findKthLargest(list, rankInBucket - 1, 0, cnt);
 //        long kth = SortUtil.quickSelect(list, rankInBucket, 0, cnt - 1);
         String res = Convert.kth2FinalKthString(kth, bucketKey);
-        logger.info("rank: %d, bucketKey: %d,cnt: %d, res: %s", rank, bucketKey, cnt, res);
-        logger.info("end query  time: %d", System.currentTimeMillis() - start);
+//        logger.info("rank: %d, bucketKey: %d,cnt: %d, res: %s", rank, bucketKey, cnt, res);
+//        logger.info("end query  time: %d", System.currentTimeMillis() - start);
         return res;
     }
 }

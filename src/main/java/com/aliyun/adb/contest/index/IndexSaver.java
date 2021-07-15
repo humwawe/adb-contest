@@ -40,7 +40,7 @@ public class IndexSaver {
         File file = new File(EnvInfo.workspace, Constants.BUCKET_DATA);
         FileChannel fileChannel = new RandomAccessFile(file, "rw").getChannel();
         int[][][] bucketCounts = Bucket.bucketCounts;
-        ByteBuffer buffer = ByteBuffer.allocate(bucketCounts.length * bucketCounts[0].length * bucketCounts[0][0].length * 4);
+        ByteBuffer buffer = ByteBuffer.allocateDirect(bucketCounts.length * bucketCounts[0].length * bucketCounts[0][0].length * 4);
         for (int[][] bucketCount : bucketCounts) {
             for (int j = 0; j < bucketCounts[0].length; j++) {
                 for (int k = 0; k < bucketCounts[0][0].length; k++) {
@@ -59,7 +59,7 @@ public class IndexSaver {
         File file = new File(EnvInfo.workspace, Constants.INDEX_DATA);
         FileChannel fileChannel = new RandomAccessFile(file, "rw").getChannel();
         int[][] bucketCounts = IndexAccumulator.bucketCounts;
-        ByteBuffer buffer = ByteBuffer.allocate(bucketCounts.length * bucketCounts[0].length * 4 + 4);
+        ByteBuffer buffer = ByteBuffer.allocateDirect(bucketCounts.length * bucketCounts[0].length * 4 + 4);
         buffer.putInt(IndexAccumulator.maxBucketKeySize);
         for (int[] bucketCount : bucketCounts) {
             for (int j = 0; j < bucketCounts[0].length; j++) {

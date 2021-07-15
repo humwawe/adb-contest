@@ -62,7 +62,7 @@ public class IndexLoader {
         File file = new File(workspaceDir, Constants.INDEX_DATA);
         FileChannel fileChannel = new RandomAccessFile(file, "r").getChannel();
         int[][] bucketCountsSum = new int[Constants.COLUMN_NUM * 2][Constants.BUCKET_SIZE];
-        ByteBuffer buffer = ByteBuffer.allocate(bucketCountsSum.length * bucketCountsSum[0].length * 4 + 4);
+        ByteBuffer buffer = ByteBuffer.allocateDirect(bucketCountsSum.length * bucketCountsSum[0].length * 4 + 4);
         fileChannel.read(buffer);
         buffer.flip();
         IndexAccumulator.maxBucketKeySize = buffer.getInt();
