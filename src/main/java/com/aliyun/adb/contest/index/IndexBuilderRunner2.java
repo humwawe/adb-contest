@@ -56,12 +56,6 @@ public class IndexBuilderRunner2 implements Runnable {
             logger.info("thread %d run done...", id);
         } catch (Throwable ex) {
             logger.error("exception caught during IndexBuilder running", ex);
-        } finally {
-            try {
-                raf.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
