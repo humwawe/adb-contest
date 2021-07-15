@@ -22,6 +22,9 @@ public class IndexAccumulator {
             for (int bucketKey = 0; bucketKey < Bucket.bucketCounts[0][0].length; bucketKey++) {
                 int tmp = 0;
                 for (int threadId = 0; threadId < Bucket.bucketCounts.length; threadId++) {
+                    if (Bucket.bucketCounts[threadId][columnId][bucketKey] == 0) {
+                        logger.info("record num 0: %d, %d, %d", threadId, columnId, bucketKey);
+                    }
                     tmp += Bucket.bucketCounts[threadId][columnId][bucketKey];
                 }
                 maxBucketKeySize = Math.max(maxBucketKeySize, tmp);
