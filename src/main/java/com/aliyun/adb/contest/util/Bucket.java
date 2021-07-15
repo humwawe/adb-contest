@@ -23,7 +23,7 @@ public class Bucket {
     public static int encode(int byte1, int byte2) {
         int t1 = byte1 - '0';
         int t2 = byte2 - '0';
-        return (t1 << 3) + (t2 << 1) + t2;
+        return (t1 << 3) + (t1 << 1) + t2;
 //        return (byte1 - '0') * 10 + byte2 - '0';
     }
 
