@@ -5,7 +5,7 @@ package com.aliyun.adb.contest.constants;
  */
 public interface Constants {
 
-    int BUCKET_SIZE = 923;
+    int BUCKET_SIZE = 93;
 
     int SEGMENT_MARGE = 50;
     int SEGMENT_SIZE = 512 * 1024 - SEGMENT_MARGE;
