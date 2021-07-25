@@ -10,12 +10,12 @@ public interface Constants {
     int SEGMENT_MARGE = 50;
     int SEGMENT_SIZE = 512 * 1024 - SEGMENT_MARGE;
 
-    int READ_NUM_CORE = 6;
+    int READ_NUM_CORE = 4;
 //    int READ_BUFFER_NUM = 1 << 6;
 
     int WRITE_BUFFER_SIZE = 32 * 1024;
 
-    int WRITE_NUM_CORE = 6;
+    int WRITE_NUM_CORE = 4;
 
 
 //    int BUCKET_MEMO_SEPARATE = 10;
