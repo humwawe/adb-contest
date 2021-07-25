@@ -108,10 +108,14 @@ public class IndexBuilderRunner2 implements Runnable {
 //        pos++;
 
         if (len == 19) {
-            int bucketKey = Bucket.encode(readBuffer[startPosition++], readBuffer[startPosition++]);
+            int bucketKey = Bucket.encode(readBuffer[startPosition++], readBuffer[startPosition++], readBuffer[startPosition++]);
             bucketCount[columnId][bucketKey]++;
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
         } else if (len == 18) {
+            int bucketKey = Bucket.encode(readBuffer[startPosition++], readBuffer[startPosition++]);
+            bucketCount[columnId][bucketKey]++;
+            writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
+        } else if (len == 17) {
             int bucketKey = Bucket.encode(readBuffer[startPosition++]);
             bucketCount[columnId][bucketKey]++;
             writeManager.putMessage(id, columnId, bucketKey, readBuffer, startPosition, pos);
