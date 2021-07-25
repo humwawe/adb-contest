@@ -45,7 +45,8 @@ public class WriterBucket {
                     e.printStackTrace();
                 }
             }
-            futures[index] = executorService.submit(() -> fileChannel.write(tmpBuffer));
+            futures[index] = executorService.submit(() -> {
+            });
             index = newIndex;
             buffers[index].clear();
         }
