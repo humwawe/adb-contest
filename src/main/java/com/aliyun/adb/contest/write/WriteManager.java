@@ -87,7 +87,7 @@ public class WriteManager {
 
 
     public void putMessage(int threadId, int columnId, int bucketKey, byte[] message, int startPosition, int pos) {
-        writerBuckets[threadId][columnId][bucketKey].putMessage(message, startPosition, pos);
+//        writerBuckets[threadId][columnId][bucketKey].putMessage(message, startPosition, pos);
     }
 
 //    public void putLong(int threadId, int columnId, int bucketKey, long num) {
